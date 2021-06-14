@@ -12,7 +12,7 @@ require("./models/Vaga")
 const Vaga = mongoose.model("vagas")
 require("./models/Usuario")
 const Usuario = mongoose.model("usuarios")
-// const usuarios = require("./routes/usuarios")
+const candidato = require("./routers/candidato")
 const passport = require("passport")
 require("./config/auth")(passport)
 //Configuracoes
@@ -93,7 +93,7 @@ require("./config/auth")(passport)
     app.get('/posts', (req, res) => {
         res.send('Lista de Posts')
     })
-    //app.use('/candidato', candidato) //'/candidato' é o prefixo, logo precisa ser adicionar pos url /admin;
+    app.use('/candidato', candidato) //'/candidato' é o prefixo, logo precisa ser adicionar pos url /admin;
     //app.use("/empresa", empresa)
     //app.use("/usuario", usuario)
     
