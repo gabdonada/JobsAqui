@@ -19,20 +19,13 @@ router.get('/', eEmpresa, (req, res) => {
 router.get("/vagas", eEmpresa, (req,res)=>{
     //res.render("admin/postagens")
 
-    Vaga.find().lean().sort({data:"desc"}).then((vagas)=>{ 
+    Vaga.find().lean().sort({data:"desc"}).then((vagas)=>{ //vai ter que vir um populate aqui em
         res.render("admin/postagens", {vagas:vagas})
     }).catch((err)=>{
         req.flash("error_msg","Houve um erro ao listar postagens: "+err)
         res.redirect("/admin")
     })
 
-    /** 
-    Postagem.find().lean().sort({date:'desc'}).then((postagens)=>{
-        res.render("admin/postagens", {postagens: postagens})
-    }).catch((err)=>{
-        req.flash("error_msg", "Houve um erro ao listar as postagens: "+err)
-        res.redirect("/admin")
-    })*/
 })
 
 router.get("/postagens/add", eEmpresa, (req,res) => {

@@ -90,4 +90,79 @@ router.get("/logout", (req,res)=>{
     res.redirect("/")
 })
 
+//Roles
+router.get('/roles/add', (req,res)=>{
+    res.render("candidato/adicionarRoles")
+})
+
+router.post('/role/nova', (req,res)=>{
+    var erros = []
+
+    if(!req.body.nome || typeof req.body.nome == undefined || req.body.nome == null){
+        erros.push({texto: "Nome invalido"})
+    }
+
+    if(erros.length > 0){
+        res.render("candidato/adicionarRoles",{erros: erros})
+    }else{
+        const novaRole = {
+            nome: req.body.nome,
+            sobre: req.body.sobre,
+            identificacao: req.body.identificacao,
+            inicio: req.body.inicio,
+            fim: req.body.fim,
+            usuario: req.user.id,
+            slug: req.body.nome + '' + req.body.identificacao + '' + req.body.inicio
+        }
+    
+        new Role(novaRole).save().then(()=>{
+            req.flash("success_msg", "Role criada com sucesso")
+            //console.log("Categoria salva com sucesso!")
+            res.redirect("/candidato/curriculo")
+        }).catch((err)=>{
+            req.flash("erro_msg","Houve um erro ao salvar a categoria: "+err)
+            //console.log("Erro ao salvar nova categoria: "+err)
+            res.redirect("/candidato/curriculo")
+        })
+    }
+
+})
+
+router.post("/role/deletar", (req,res) => { 
+    Role.findOne({_id: req.body.id}).then((role) =>{ //utilizar body quando e a variavel do Body e params quando é para imputar na tela
+        role.deletada = 1
+
+        Role.save().then(() =>{
+            req.flash("success_msg", "Role deletada com sucesso!")
+            res.redirect("/candidato/curriculo")
+        }).catch((err)=>{
+            req.flash("error_msg", "Houve um erro ao salvar a alteração: "+err)
+            res.redirect("/candidato/curriculo")
+        })
+    }).catch((err)=>{
+       req.flash("error_msg", "Houve um erro ao deletar a role: "+err)
+       res.redirect("/candidato/curriculo") 
+    })
+})
+
+//curriculo
+router.get("/curriculo/:id", (req, res)=>{
+    Curriculo.findOne({_id: req.params.id}).lean.then((curriculo)=>{
+        res.render("candidato/curriculo",{curriculo: curriculo})
+    }).catch((err)=>{
+        req.flash("error_msg","Curriculo não encontrado")
+        res.redirect("/")
+    })
+})
+
+router.get("/curriculo/editContato/:id", (req,res)=>{
+    Curriculo.findOne({_id: req.params.id}).lean().then((curriculo)=>{
+        res.render("candidato/editarContatos",{curriculo: curriculo})
+    }).catch((err)=>{
+        req.flash("error_msg","Curriculo não encontrado")
+        res.redirect("/")
+    })
+    
+})
+
 module.exports = router
