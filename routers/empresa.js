@@ -5,10 +5,10 @@ const mongoose = require("mongoose")
 //const Categoria = mongoose.model("categorias") //exatamente o nome dado entre "" em Categoria.js... Passa referencia para a constante
 require('../models/Vaga')
 const Vaga = mongoose.model("vagas")
-//const {eAdmin} = require ("../helpers/eAdmin") //pega só a função 'eAdmin' dentro de eAdmin file; variavel aqui = eAdmin
+const {eEmpresa} = require ("../helpers/eEmpresa") //pega só a função 'eEmpresa' dentro de eEmpresa file; variavel aqui = eAdmin
 
 //aqui se define rotas
-router.get('/', eAdmin, (req, res) => {
+router.get('/', eEmpresa, (req, res) => {
     res.render("admin/index")
 })
 
@@ -16,7 +16,7 @@ router.get('/', eAdmin, (req, res) => {
 
 
 //pagina de postagens
-router.get("/vagas", eAdmin, (req,res)=>{
+router.get("/vagas", eEmpresa, (req,res)=>{
     //res.render("admin/postagens")
 
     Vaga.find().lean().sort({data:"desc"}).then((vagas)=>{ 
@@ -35,7 +35,7 @@ router.get("/vagas", eAdmin, (req,res)=>{
     })*/
 })
 
-router.get("/postagens/add", eAdmin, (req,res) => {
+router.get("/postagens/add", eEmpresa, (req,res) => {
     Categoria.find().lean().then((categorias)=>{
         res.render("admin/addpostagem", {categorias: categorias}) //encaminhando os dados para a page
     }).catch((err)=>{
@@ -45,7 +45,7 @@ router.get("/postagens/add", eAdmin, (req,res) => {
     
 })
 
-router.post("/postagens/nova", eAdmin, (req, res)=>{
+router.post("/postagens/nova", eEmpresa, (req, res)=>{
     var erros = []
 
     if(req.body.categoria == "0"){
@@ -73,7 +73,7 @@ router.post("/postagens/nova", eAdmin, (req, res)=>{
     }
 })
 
-router.get("/postagens/edit/:id", eAdmin, (req, res)=>{
+router.get("/postagens/edit/:id", eEmpresa, (req, res)=>{
 
     Postagem.findOne({_id: req.params.id}).lean().then((postagem)=>{//params pq ta pegando do link
         Categoria.find().lean().then((categorias)=>{
@@ -89,7 +89,7 @@ router.get("/postagens/edit/:id", eAdmin, (req, res)=>{
     
 })
 
-router.post("/postagem/edit", eAdmin, (req,res)=>{
+router.post("/postagem/edit", eEmpresa, (req,res)=>{
     Postagem.findOne({_id: req.body.id}).then((postagem)=>{
         postagem.titulo = req.body.titulo
         postagem.slug = req.body.slug
@@ -110,7 +110,7 @@ router.post("/postagem/edit", eAdmin, (req,res)=>{
     })
 })
 
-router.get("/postagens/deletar/:id", eAdmin, (req,res)=>{
+router.get("/postagens/deletar/:id", eEmpresa, (req,res)=>{
     Postagem.remove({_id: req.params.id}).then(()=>{ //meio não tão seguro por ser get
         req.flash("success_msg","Postagem deletada com sucesso")
         res.redirect("/admin/postagens")
