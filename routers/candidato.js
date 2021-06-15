@@ -3,8 +3,13 @@ const router = express.Router()
 const mongoose = require('mongoose')
 require("../models/Usuario")
 const Usuario = mongoose.model("usuarios")
+require("../models/Curriculo")
+const Curriculo = mongoose.model("curriculos")
+require("../models/Role")
+const Role = mongoose.model("roles")
 const bcrypt= require("bcryptjs")
 const passport = require("passport")
+const {eCandidato} = require ("../helpers/eCandidato")
 
 router.get("/registro", (req,res)=>{
     res.render("usuario/registro")
@@ -91,11 +96,11 @@ router.get("/logout", (req,res)=>{
 })
 
 //Roles
-router.get('/roles/add', (req,res)=>{
+router.get('/roles/add', eCandidato, (req,res)=>{
     res.render("candidato/adicionarRoles")
 })
 
-router.post('/role/nova', (req,res)=>{
+router.post('/role/nova', eCandidato, (req,res)=>{
     var erros = []
 
     if(!req.body.nome || typeof req.body.nome == undefined || req.body.nome == null){
@@ -128,7 +133,7 @@ router.post('/role/nova', (req,res)=>{
 
 })
 
-router.post("/role/deletar", (req,res) => { 
+router.post("/role/deletar", eCandidato, (req,res) => { 
     Role.findOne({_id: req.body.id}).then((role) =>{ //utilizar body quando e a variavel do Body e params quando é para imputar na tela
         role.deletada = 1
 
@@ -146,7 +151,7 @@ router.post("/role/deletar", (req,res) => {
 })
 
 //curriculo
-router.get("/curriculo/:id", (req, res)=>{
+router.get("/curriculo/:id", eCandidato, (req, res)=>{
     Curriculo.findOne({_id: req.params.id}).lean.then((curriculo)=>{
         res.render("candidato/curriculo",{curriculo: curriculo})
     }).catch((err)=>{
@@ -155,7 +160,7 @@ router.get("/curriculo/:id", (req, res)=>{
     })
 })
 
-router.get("/curriculo/editContato/:id", (req,res)=>{
+router.get("/curriculo/editContato/:id", eCandidato, (req,res)=>{
     Curriculo.findOne({_id: req.params.id}).lean().then((curriculo)=>{
         res.render("candidato/editarContatos",{curriculo: curriculo})
     }).catch((err)=>{
