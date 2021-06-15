@@ -90,9 +90,6 @@ require("./config/auth")(passport)
         res.send('Erro 404!')
     })
 
-    app.get('/posts', (req, res) => {
-        res.send('Lista de Posts')
-    })
     app.use('/candidato', candidato) //'/candidato' é o prefixo, logo precisa ser adicionar pos url /admin;
     //app.use("/empresa", empresa)
     //app.use("/usuario", usuario)
