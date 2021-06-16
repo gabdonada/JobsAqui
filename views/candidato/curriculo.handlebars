@@ -1,0 +1,16 @@
+<a href="/candidato/roles/add"><button type="submit" class="btn btn-success">Nova Role</button></a>
+<br>
+<br>
+<div class="card">
+    <div class="card-body">
+        {{#each curriculo}}
+            <h4>{{nome}}</h4>
+            <h6>Telefone: {{telefone}}</h6>
+            <h6>Email: {{email}}</h6>
+            <hr>
+            <h4>{{curriculo.role.nome}}</h4>
+            <h4>{{role.nome}}</h4>
+        {{else}}
+        {{/each}}
+    </div>
+</div>

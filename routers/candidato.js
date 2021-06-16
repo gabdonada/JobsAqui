@@ -153,7 +153,7 @@ router.post("/role/deletar", eCandidato, (req,res) => {
 
 //curriculo
 router.get("/curriculo", eCandidato, (req,res)=>{
-    Curriculo.findOne({usuario: req.user.id}).lean().then((curriculo)=>{
+    Curriculo.findOne({usuario: req.user.id}).lean().populate("usuario").populate("role").then((curriculo)=>{
         if(curriculo){
             res.render("candidato/curriculo",{curriculo: curriculo})
         }else{
