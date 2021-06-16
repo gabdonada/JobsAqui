@@ -18,6 +18,10 @@ const Usuario = new Schema({
         type: String,
         required: true
     },
+    telefone:{
+        type: String,
+        required: true
+    },
     sobre:{
         type: String
     }

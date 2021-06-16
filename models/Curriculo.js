@@ -10,6 +10,10 @@ const Curriculo = new Schema({
     role:{
         type: Schema.Types.ObjectId,
         ref: "roles"
+    },
+    dataLimite:{
+        type: Date,
+        required: true
     }
 })
 

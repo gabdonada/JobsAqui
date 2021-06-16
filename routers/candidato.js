@@ -49,6 +49,7 @@ router.post("/registro", (req,res)=>{
                     email: req.body.email,
                     senha: req.body.senha,
                     accessType: req.body.accessType,
+                    telefone: req.body.telefone,
                     sobre: req.body.sobre
                 })
 
@@ -108,7 +109,7 @@ router.post('/role/nova', eCandidato, (req,res)=>{
     }
 
     if(erros.length > 0){
-        res.render("candidato/adicionarRoles",{erros: erros})
+        res.render("/candidato/roles/add",{erros: erros})
     }else{
         const novaRole = {
             nome: req.body.nome,
@@ -123,18 +124,18 @@ router.post('/role/nova', eCandidato, (req,res)=>{
         new Role(novaRole).save().then(()=>{
             req.flash("success_msg", "Role criada com sucesso")
             //console.log("Categoria salva com sucesso!")
-            res.redirect("/candidato/curriculo")
+            res.redirect("/")
         }).catch((err)=>{
-            req.flash("erro_msg","Houve um erro ao salvar a categoria: "+err)
+            req.flash("erro_msg","Houve um erro ao salvar a Role: "+err)
             //console.log("Erro ao salvar nova categoria: "+err)
-            res.redirect("/candidato/curriculo")
+            res.redirect("/")
         })
     }
 
 })
 
 router.post("/role/deletar", eCandidato, (req,res) => { 
-    Role.findOne({_id: req.body.id}).then((role) =>{ //utilizar body quando e a variavel do Body e params quando é para imputar na tela
+    Role.findOne({id: req.body.id}).then((role) =>{ //utilizar body quando e a variavel do Body e params quando é para imputar na tela
         role.deletada = 1
 
         Role.save().then(() =>{
@@ -151,23 +152,59 @@ router.post("/role/deletar", eCandidato, (req,res) => {
 })
 
 //curriculo
-router.get("/curriculo/:id", eCandidato, (req, res)=>{
-    Curriculo.findOne({_id: req.params.id}).lean.then((curriculo)=>{
-        res.render("candidato/curriculo",{curriculo: curriculo})
+router.get("/curriculo", eCandidato, (req,res)=>{
+    Curriculo.findOne({usuario: req.user.id}).lean().then((curriculo)=>{
+        if(curriculo){
+            res.render("candidato/curriculo",{curriculo: curriculo})
+        }else{
+            req.flash("error_msg","Você não possui curriculo registrado, registre nesta pagina")
+            res.redirect("/candidato/criarCurriculo")
+        }
     }).catch((err)=>{
-        req.flash("error_msg","Curriculo não encontrado")
+        req.flash("error_msg","Erro ao função pagina de curriculo")
         res.redirect("/")
     })
 })
 
-router.get("/curriculo/editContato/:id", eCandidato, (req,res)=>{
-    Curriculo.findOne({_id: req.params.id}).lean().then((curriculo)=>{
-        res.render("candidato/editarContatos",{curriculo: curriculo})
-    }).catch((err)=>{
-        req.flash("error_msg","Curriculo não encontrado")
-        res.redirect("/")
-    })
-    
+router.get("/criarCurriculo", eCandidato, (req,res)=>{
+    res.render("candidato/criarCurriculo", {usuarioid: req.user.id})
 })
+
+router.post("/criarCurriculo/novo", eCandidato, (req,res) => { 
+    var erros = []
+
+    if(req.body.data == undefined){
+        erros.push({texto: "Data invalida, registre uma data"})
+    }
+
+    if(erros.length > 0){
+        res.render("candidato/criarCurriculo")
+    }else{
+        const novoCurriculo = {
+            usuario: req.body.userid,
+            dataLimite: req.body.data
+        }
+
+        new Curriculo(novoCurriculo).save().then(()=>{
+            req.flash("success_msg","Curriculo criada com sucesso. Agora, registre novas Roles")
+            res.redirect("/candidato/roles/add")
+        }).catch((err)=>{
+            req.flash("error_msg", "Houve um erro ao salvar: "+err)
+            res.redirect("/")
+        })
+    }
+})
+
+
+// router.get("/curriculo/:id", eCandidato, (req, res)=>{
+//     Curriculo.findOne({_id: req.params.id}).lean().then((curriculo)=>{
+//         res.render("candidato/curriculo",{curriculo: curriculo})
+//     }).catch((err)=>{
+//         req.flash("error_msg","Curriculo não encontrado")
+//         res.redirect("/")
+//     })
+// })
+
+
 
 module.exports = router
