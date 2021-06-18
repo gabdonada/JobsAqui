@@ -11,10 +11,6 @@ const Vaga = new Schema({
         ref: "usuarios",
         required: true
     },
-    slug:{
-        type: String,
-        required: true
-    },
     candidatos:{
         type: Schema.Types.ObjectId,
         ref: "curriculos"
@@ -24,10 +20,6 @@ const Vaga = new Schema({
         required: true
     },
     area:{ //educacao....
-        type: String,
-        required: true
-    },
-    especialista:{
         type: String,
         required: true
     },

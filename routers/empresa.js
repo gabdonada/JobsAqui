@@ -17,8 +17,14 @@ const {eEmpresa} = require ("../helpers/eEmpresa") //pega só a função 'eEmpre
 
 //pagina de vagas
 router.get("/vagas", eEmpresa, (req,res)=>{
+    var result = []
     Vaga.find().lean().sort({data:"desc"}).then((vagas)=>{ //vai ter que vir um populate aqui em
-        res.render("empresa/adminvagas", {vagas:vagas})
+        for(var i = 0; i < vagas.length; i++){
+            if(vagas[i].criador == req.user.id){
+                result.push(vagas[i])
+            }
+        }        
+        res.render("empresa/adminvagas", {vagas:result})
     }).catch((err)=>{
         req.flash("error_msg","Houve um erro ao listar vagas: "+err)
         res.redirect("/")
@@ -26,42 +32,28 @@ router.get("/vagas", eEmpresa, (req,res)=>{
 
 })
 
-router.get("/postagens/add", eEmpresa, (req,res) => {
-    Categoria.find().lean().then((categorias)=>{
-        res.render("admin/addpostagem", {categorias: categorias}) //encaminhando os dados para a page
-    }).catch((err)=>{
-        req.flash("error_msg", "Erro ao carregar categorias: "+err)
-        res.redirect("/admin")
-    })
+router.get("/vagas/add", eEmpresa, (req,res) => {
+    res.render("empresa/addvaga", {usuario: req.user.id})
     
 })
 
-router.post("/postagens/nova", eEmpresa, (req, res)=>{
-    var erros = []
-
-    if(req.body.categoria == "0"){
-        erros.push({texto: "Categoria invalida, registre uma categoria"})
-    }
-
-    if(erros.length > 0){
-        res.render("admin/addpostagem")
-    }else{
-        const novaPostagem = {
-            titulo: req.body.titulo,
+router.post("/vagas/nova", eEmpresa, (req, res)=>{
+    
+        const novaVaga = {
+            nome: req.body.nome,
             descricao: req.body.descricao,
-            conteudo: req.body.conteudo,
-            categoria: req.body.categoria,
-            slug: req.body.slug
+            area: req.body.area,
+            beneficios: req.body.beneficios,
+            criador: req.user.id
         }
 
-        new Postagem(novaPostagem).save().then(()=>{
-            req.flash("success_msg","Postagem criada com sucesso!")
-            res.redirect("/admin/postagens")
+        new Vaga(novaVaga).save().then(()=>{
+            req.flash("success_msg","Vaga criada com sucesso!")
+            res.redirect("/empresa/vagas")
         }).catch((err)=>{
             req.flash("error_msg", "Houve um erro ao salvar: "+err)
-            res.redirect("/admin/postagens")
+            res.redirect("/empresa/vagas")
         })
-    }
 })
 
 router.get("/postagens/edit/:id", eEmpresa, (req, res)=>{

@@ -172,15 +172,5 @@ router.post("/curriculo/edit", eCandidato, (req,res)=>{
 })
 
 
-// router.get("/curriculo/:id", (req, res)=>{
-//     Curriculo.findOne({_id: req.params.id}).lean().then((curriculo)=>{
-//         res.render("candidato/curriculo",{curriculo: curriculo})
-//     }).catch((err)=>{
-//         req.flash("error_msg","Curriculo não encontrado")
-//         res.redirect("/")
-//     })
-// })
-
-
 
 module.exports = router
