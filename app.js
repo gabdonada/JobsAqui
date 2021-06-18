@@ -12,6 +12,7 @@ require("./models/Vaga")
 const Vaga = mongoose.model("vagas")
 require("./models/Usuario")
 const Usuario = mongoose.model("usuarios")
+const empresa = require("./routers/empresa")
 const candidato = require("./routers/candidato")
 const passport = require("passport")
 require("./config/auth")(passport)
@@ -90,8 +91,8 @@ require("./config/auth")(passport)
         res.send('Erro 404!')
     })
 
-    app.use('/candidato', candidato) //'/candidato' é o prefixo, logo precisa ser adicionar pos url /admin;
-    //app.use("/empresa", empresa)
+    app.use('/candidato', candidato) //'/candidato' é o prefixo, logo precisa ser adicionar pos url /candidato;
+    app.use('/empresa', empresa)
     //app.use("/usuario", usuario)
     
 //Outros
