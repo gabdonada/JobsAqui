@@ -8,22 +8,20 @@ const Vaga = mongoose.model("vagas")
 const {eEmpresa} = require ("../helpers/eEmpresa") //pega só a função 'eEmpresa' dentro de eEmpresa file; variavel aqui = eAdmin
 
 //aqui se define rotas
-router.get('/', eEmpresa, (req, res) => {
-    res.render("admin/index")
-})
+// router.get('/', eEmpresa, (req, res) => {
+//     res.render("admin/index")
+// })
 
 
 
 
-//pagina de postagens
+//pagina de vagas
 router.get("/vagas", eEmpresa, (req,res)=>{
-    //res.render("admin/postagens")
-
     Vaga.find().lean().sort({data:"desc"}).then((vagas)=>{ //vai ter que vir um populate aqui em
-        res.render("admin/postagens", {vagas:vagas})
+        res.render("empresa/adminvagas", {vagas:vagas})
     }).catch((err)=>{
-        req.flash("error_msg","Houve um erro ao listar postagens: "+err)
-        res.redirect("/admin")
+        req.flash("error_msg","Houve um erro ao listar vagas: "+err)
+        res.redirect("/")
     })
 
 })

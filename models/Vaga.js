@@ -30,6 +30,14 @@ const Vaga = new Schema({
     especialista:{
         type: String,
         required: true
+    },
+    beneficios:{
+        type: String,
+        required: true
+    },
+    finalizado:{
+        type: Number,
+        default: 0
     }
 })
  mongoose.model("vagas", Vaga)
