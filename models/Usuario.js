@@ -24,6 +24,9 @@ const Usuario = new Schema({
     },
     sobre:{
         type: String
+    },
+    linkedin:{
+        type: String
     }
 })
 

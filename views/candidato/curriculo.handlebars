@@ -1,16 +1,31 @@
-<a href="/candidato/roles/add"><button type="submit" class="btn btn-success">Nova Role</button></a>
+<a href="/candidato/editcurriculo/{{curriculo.usuario._id}}"><button type="submit" class="btn btn-success">Editar Curriculo</button></a>
 <br>
 <br>
 <div class="card">
     <div class="card-body">
-        {{#each curriculo}}
-            <h4>{{nome}}</h4>
-            <h6>Telefone: {{telefone}}</h6>
-            <h6>Email: {{email}}</h6>
+        
+            <h1>{{curriculo.usuario.nome}}</h1>
+            <h6>Telefone: {{curriculo.usuario.telefone}}</h6>
+            <h6>Email: {{curriculo.usuario.email}}</h6>
+            <h6>Linkedin: {{curriculo.usuario.linkedin}}</h6>
             <hr>
-            <h4>{{curriculo.role.nome}}</h4>
-            <h4>{{role.nome}}</h4>
-        {{else}}
-        {{/each}}
+            <h4>Experiência: </h4>
+            <h6>{{curriculo.experiencia}}</h6>
+            <hr>
+            <h4>Educação: </h4>
+            <h6>{{curriculo.educacao}}</h6>
+            <hr>
+            <h4>Certificação: </h4>
+            <h6>{{curriculo.certificacao}}</h6>
+            <hr>
+            <h4>Idioma: </h4>
+            <h6>{{curriculo.idioma}}</h6>
+            <hr>
+            <h4>Habilidades: </h4>
+            <h6>{{curriculo.habilidades}}</h6>
+            <hr>
+            <h4>Outros: </h4>
+            <h6>{{curriculo.outros}}</h6>
+        
     </div>
 </div>

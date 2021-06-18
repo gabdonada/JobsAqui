@@ -7,13 +7,25 @@ const Curriculo = new Schema({
         ref: "usuarios",
         required: true
     },
-    role:{
-        type: Schema.Types.ObjectId,
-        ref: "roles"
+    experiencia:{
+        type: String
     },
-    dataLimite:{
-        type: Date,
+    educacao:{
+        type: String,
         required: true
+    },
+    certificacao:{
+        type: String
+    },
+    idioma:{
+        type: String,
+        required: true
+    },
+    habilidades:{
+        type: String
+    },
+    outros:{
+        type: String
     }
 })
 
