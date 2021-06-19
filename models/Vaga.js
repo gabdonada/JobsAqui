@@ -28,8 +28,8 @@ const Vaga = new Schema({
         required: true
     },
     finalizado:{
-        type: Number,
-        default: 0
+        type: String,
+        default: "N"
     }
 })
  mongoose.model("vagas", Vaga)

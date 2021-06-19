@@ -20,7 +20,7 @@ router.get("/vagas", eEmpresa, (req,res)=>{
     var result = []
     Vaga.find().lean().sort({data:"desc"}).then((vagas)=>{ //vai ter que vir um populate aqui em
         for(var i = 0; i < vagas.length; i++){
-            if(vagas[i].criador == req.user.id){
+            if(vagas[i].criador == req.user.id && vagas[i].finalizado == "N"){
                 result.push(vagas[i])
             }
         }        
@@ -88,13 +88,21 @@ router.post("/vaga/alterar", eEmpresa, (req,res)=>{
     })
 })
 
-router.get("/postagens/deletar/:id", eEmpresa, (req,res)=>{
-    Postagem.remove({_id: req.params.id}).then(()=>{ //meio não tão seguro por ser get
-        req.flash("success_msg","Postagem deletada com sucesso")
-        res.redirect("/admin/postagens")
+router.get("/vaga/finalizar/:id", eEmpresa, (req,res)=>{
+    Vaga.findOne({_id: req.params.id}).then((vaga)=>{
+        console.log(vaga)
+        vaga.finalizado = "Y"
+
+        vaga.save().then(()=>{
+            req.flash("success_msg","Vaga finalizada com sucesso")
+            res.redirect("/empresa/vagas")
+        }).catch((err)=>{
+            req.flash("error_msg","Erro ao salvar finalização: "+err)
+            res.redirect("/empresa/vagas")
+        })
     }).catch((err)=>{
-        req.flash("error_msg","Erro ao deletar postagem: "+err)
-        res.redirect("/admin/postagens")
+        req.flash("error_msg", "Houve um erro ao finalizar: "+err)
+        res.redirect("/empresa/vagas")
     })
 })
 

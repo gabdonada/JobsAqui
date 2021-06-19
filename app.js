@@ -62,8 +62,14 @@ require("./config/auth")(passport)
 
 //Rotas
     app.get('/', (req, res) => {
+        var result = []
         Vaga.find().lean().sort({data: "desc"}).then((vagas)=>{
-            res.render("index", {vagas: vagas})
+            for(var i = 0; i < vagas.length; i++){
+                if(vagas[i].finalizado == "N"){
+                    result.push(vagas[i])
+                }
+            }        
+            res.render("index", {vagas: result})
         }).catch((err)=>{
             //console.log(err)
             req.flash("error_msg", "Erro ao carregar Jobs: "+err)
