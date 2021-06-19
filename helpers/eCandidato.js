@@ -3,7 +3,7 @@ module.exports = {
         if(req.isAuthenticated() && req.user.accessType == 'Candidato'){
             return next()
         }else{
-            req.flash("error_msg", "Você não é Candidato")
+            req.flash("error_msg", "Você não é Candidato, registre-se")
             res.redirect("/")
         }
     }

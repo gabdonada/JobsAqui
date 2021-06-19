@@ -56,40 +56,35 @@ router.post("/vagas/nova", eEmpresa, (req, res)=>{
         })
 })
 
-router.get("/postagens/edit/:id", eEmpresa, (req, res)=>{
+router.get("/vaga/edit/:id", eEmpresa, (req, res)=>{
 
-    Postagem.findOne({_id: req.params.id}).lean().then((postagem)=>{//params pq ta pegando do link
-        Categoria.find().lean().then((categorias)=>{
-            res.render("admin/editpostagens", {categorias: categorias, postagem: postagem})
-        }).catch((err)=>{
-            req.flash("error_msg","Houve um erro ao listar as categorias: "+err)
-            res.redirect("/admin/postagens")
-        })
+    Vaga.findOne({_id: req.params.id}).lean().then((vaga)=>{//params pq ta pegando do link
+        res.render("empresa/editvaga", {vaga: vaga})
     }).catch((err)=>{
         req.flash("error_msg", "Ocorreu um erro ao carregar o formulario: "+err)
-        res.redirect("/admin/postagens")
+        res.redirect("empresa/vagas")
     }) 
     
 })
 
-router.post("/postagem/edit", eEmpresa, (req,res)=>{
-    Postagem.findOne({_id: req.body.id}).then((postagem)=>{
-        postagem.titulo = req.body.titulo
-        postagem.slug = req.body.slug
-        postagem.descricao = req.body.descricao
-        postagem.conteudo = req.body.conteudo
-        postagem.categoria = req.body.categoria
+router.post("/vaga/alterar", eEmpresa, (req,res)=>{
 
-        postagem.save().then(()=>{
-            req.flash("success_msg","Postagem editada com sucesso")
-            res.redirect("/admin/postagens")
+    Vaga.findOne({_id: req.body.id}).then((vaga)=>{
+        vaga.nome = req.body.nome,
+        vaga.descricao = req.body.descricao,
+        vaga.area = req.body.area,
+        vaga.beneficios = req.body.beneficios
+
+        vaga.save().then(()=>{
+            req.flash("success_msg","Vaga editada com sucesso")
+            res.redirect("/empresa/vagas")
         }).catch((err)=>{
-            req.flash("error_msg","Erro ao salvar edição de postagem: "+err)
-            res.redirect("/admin/postagens")
+            req.flash("error_msg","Erro ao salvar edição: "+err)
+            res.redirect("/empresa/vagas")
         })
     }).catch((err)=>{
         req.flash("error_msg", "Houve um erro ao editar: "+err)
-        res.redirect("/admin/postagens")
+        res.redirect("/empresa/vagas")
     })
 })
 

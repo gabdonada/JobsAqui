@@ -1,0 +1,33 @@
+{{#each erros}}
+    <div class="alert alert-danger">{{texto}}</div>
+{{else}}
+
+{{/each}}
+
+<h3>Edite a vaga da sua empresa:</h3>
+<div class="card">
+    <div class="card-body">
+        <form action="/empresa/vaga/alterar" method="POST">   
+            <input type="hidden" value="{{vaga._id}}" name="id">         
+            <label for="nome">Titulo: </label><br>
+                <input type="text" name="nome" class="form-control" value="{{vaga.nome}}"><br>
+
+            <label for="area" >Area:</label>
+                <select name="area" id="area" required class="form-control">
+                    <option value="Quimica">Quimica</option>
+                    <option value="TI Desenvolvedor">TI Desenvolvedor</option>
+                    <option value="TI Suporte">TI Suporte</option>
+                    <option value="Saude">Saude</option>
+                    <option value="Eletrecista">Eletrecista</option>
+                </select>
+                <br>
+
+            <label for="descricao">Descrição:</label><br>
+                <textarea type="text" name="descricao" class="form-control" required>{{vaga.descricao}}</textarea><br>
+            
+            <label for="beneficios">Beneficios:</label><br>
+                <textarea type="text" name="beneficios" class="form-control" required>{{vaga.beneficios}}</textarea>
+            <button type="submit" class="btn btn-success mt-4">Guardar</button>
+        </form>
+    </div>
+</div>

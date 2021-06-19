@@ -5,6 +5,8 @@ require("../models/Usuario")
 const Usuario = mongoose.model("usuarios")
 require("../models/Curriculo")
 const Curriculo = mongoose.model("curriculos")
+require("../models/Vaga")
+const Vaga = mongoose.model("vagas")
 const bcrypt= require("bcryptjs")
 const passport = require("passport")
 const {eCandidato} = require ("../helpers/eCandidato")
@@ -171,6 +173,27 @@ router.post("/curriculo/edit", eCandidato, (req,res)=>{
     })
 })
 
+router.get("/candidatarse/:id", eCandidato, (req,res)=>{
+    Vaga.findOne({_id: req.params.id}).then((vaga)=>{
+        if(vaga.candidatos){
+            candidato = [vaga.candidatos]
+            candidato.push(req.user._id)
+            vaga.candidatos = candidato
+        }else{
+            candidato = []
+            candidato.push(req.user._id)
+            vaga.candidatos = candidato
+        }
+        
 
+        vaga.save().then(()=>{
+            req.flash("success_msg","Você se candidatou com sucesso! Continue encaminhando seu curriculo.")
+            res.redirect("/")
+        }).catch((err)=>{
+            req.flash("error_msg", "Houve um erro ao cadastrar candidatura: "+err)
+            res.redirect("/")
+        })
+    })
+})
 
 module.exports = router

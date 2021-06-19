@@ -72,12 +72,18 @@ require("./config/auth")(passport)
         
     })
 
-    app.get("/vaga/:slug", (req, res)=>{
-        Postagem.findOne({slug: req.params.slug}).lean().then((vaga)=>{
+    app.get("/vaga/:id", (req, res)=>{
+        Vaga.findOne({_id: req.params.id}).populate("usuario").lean().then((vaga)=>{
             if(vaga){
-                res.render("vaga/index", {vaga: vaga})
+                Usuario.findOne({_id: vaga.criador}).then((usuariocriador)=>{
+                    res.render("vaga/index", {vaga: vaga, usuariocriador: usuariocriador.nome, sobre: usuariocriador.sobre,
+                        telefone: usuariocriador.telefone, linkedin: usuariocriador.linkedin})
+                }).catch((err)=>{
+                    req.flash("error_msg", "Erro ao buscar criador: " +err)
+                    res.redirect("/")
+                })
             }else{
-                req.flash("error_msg", "Esta postagem não existe: " +err)
+                req.flash("error_msg", "Esta vaga não encontrada: " +err)
                 res.redirect("/")
             }
         }).catch((err)=>{

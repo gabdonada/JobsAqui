@@ -1,9 +1,15 @@
 <div class="card">
     <div class="card-body">
-        <h1>{{vaga.titulo}}</h1>
+        <h1>{{vaga.nome}}</h1>
+        <h5>{{usuariocriador}}</h5>
+        <small>Linkedin: {{linkedin}}</small> <br>
+        <small>Telefone: {{telefone}}</small> <br>
+        <small>Sobre: {{sobre}}</small>
         <hr>
-        <small>Data de publicação: {{vaga.data}}</small>
-        <hr>
-        <p>{{vaga.conteudo}}</p>
+        <p>Area: {{vaga.area}}</p>
+        <p>Descrição: {{vaga.descricao}}</p>
+        <p>Beneficios: {{vaga.beneficios}}</p>
+
+        <a href="/candidato/candidatarse/{{vaga._id}}"><button class="btn btn-success">Candidatar-se</button></a>
     </div>
 </div>
