@@ -12,8 +12,8 @@ const Vaga = new Schema({
         required: true
     },
     candidatos:{
-        type: Schema.Types.ObjectId,
-        ref: "curriculos"
+        type: String,
+        any: Array
     },
     descricao:{
         type: String,

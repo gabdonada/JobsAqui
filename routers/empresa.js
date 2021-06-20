@@ -5,6 +5,9 @@ const mongoose = require("mongoose")
 //const Categoria = mongoose.model("categorias") //exatamente o nome dado entre "" em Categoria.js... Passa referencia para a constante
 require('../models/Vaga')
 const Vaga = mongoose.model("vagas")
+require('../models/Curriculo')
+const Curriculo = mongoose.model("curriculos")
+
 const {eEmpresa} = require ("../helpers/eEmpresa") //pega só a função 'eEmpresa' dentro de eEmpresa file; variavel aqui = eAdmin
 
 //aqui se define rotas
@@ -103,6 +106,37 @@ router.get("/vaga/finalizar/:id", eEmpresa, (req,res)=>{
     }).catch((err)=>{
         req.flash("error_msg", "Houve um erro ao finalizar: "+err)
         res.redirect("/empresa/vagas")
+    })
+})
+
+router.get("/visualizarinscritos/:id", eEmpresa, (req,res)=>{
+    result = []
+    Vaga.findOne({_id: req.params.id}).then((vaga)=>{
+        Curriculo.find().then((curriculo)=>{
+            if(curriculo){
+                for(var i = 0; i < curriculo.length; i++){
+                    if(vaga.candidato == curriculo[i].usuario){
+                        result.push(curriculo[i])
+                    }
+                }
+                res.render("empresa/viewcurriculos", {curriculo: result})
+            }else{
+                req.flash("error_msg", "Não há curriculos relacionados")
+                res.redirect("/empresa/vagas")
+            }
+        }).catch((err)=>{
+            req.flash("error_msg", "Houve um erro ao buscar usuários relacionados a vaga: "+err)
+            res.redirect("/empresa/vagas")
+        })
+    }).catch((err)=>{
+        req.flash("error_msg", "Houve um erro ao carregar vaga: "+err)
+        res.redirect("/empresa/vagas")
+    })
+})
+
+router.get("/curriculo/:id", eEmpresa, (req,res)=>{
+    Curriculo.findOne({_id: req.params.id}).then((curriculo)=>{
+        res.render("empresa/viewcandidato", {curriculo: curriculo})
     })
 })
 

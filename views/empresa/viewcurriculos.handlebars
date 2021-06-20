@@ -1,0 +1,13 @@
+<h3>Candidatos a vaga:</h3>
+
+{{#each curriculo}}
+    <div class="card">
+        <div class="card-body">
+            <h4>{{curriculo.usuario.nome}}</h4>
+            <small>Sobre: {{curriculo.usuario.sobre}}</small>
+            <a href="/empresa/curriculo/:{{curriculo._id}}"><button class="btn btn-success">Visualizar Curriculo</button></a>
+        </div>
+    </div>
+{{else}}
+<h4>Não há curriculos registrados</h4>
+{{/each}}
