@@ -174,18 +174,22 @@ router.post("/curriculo/edit", eCandidato, (req,res)=>{
 })
 
 router.get("/candidatarse/:id", eCandidato, (req,res)=>{
-    // Vaga.findOne({_id: req.params.id}).then((vaga)=>{
-        
-    //     vaga.candidatos.push(req.user._id)
+    Vaga.findOne({_id: req.params.id}).then((vaga)=>{
 
-    //     vaga.save().then(()=>{
-    //     req.flash("success_msg","Você se candidatou com sucesso! Continue encaminhando seu curriculo.")
-    //     res.redirect("/")
-    // }).catch((err)=>{
-    //     req.flash("error_msg", "Houve um erro ao cadastrar candidatura: "+err)
-    //     res.redirect("/")
-    // })
-    // })
+        if(Array.isArray(vaga.candidatos)){
+            vaga.candidatos.push(JSON.parse(JSON.stringify(req.user._id)));
+        } else {
+            vaga.candidatos = [JSON.parse(JSON.stringify(req.user._id))];
+        }
+
+        vaga.save().then(()=>{
+        req.flash("success_msg","Você se candidatou com sucesso! Continue encaminhando seu curriculo.")
+        res.redirect("/")
+    }).catch((err)=>{
+        req.flash("error_msg", "Houve um erro ao cadastrar candidatura: "+err)
+        res.redirect("/")
+    })
+    })
 })
 
 module.exports = router

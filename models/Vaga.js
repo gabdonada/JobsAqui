@@ -12,8 +12,8 @@ const Vaga = new Schema({
         required: true
     },
     candidatos:{
-        type: String,
-        any: Array
+        type: Array,
+        default: []
     },
     descricao:{
         type: String,
