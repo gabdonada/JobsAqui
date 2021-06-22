@@ -121,6 +121,8 @@ router.post("/criarCurriculo/novo", eCandidato, (req,res) => {
 
         const novoCurriculo = {
             usuario: req.body.userid,
+            nome: req.user.nome,
+            sobre: req.user.sobre,
             experiencia: req.body.experiencia,
             educacao: req.body.educacao,
             certificacao: req.body.certificacao,
@@ -175,20 +177,40 @@ router.post("/curriculo/edit", eCandidato, (req,res)=>{
 
 router.get("/candidatarse/:id", eCandidato, (req,res)=>{
     Vaga.findOne({_id: req.params.id}).then((vaga)=>{
+        Curriculo.findOne({usuario: req.user._id}).then( (curriculo)=>{
+            if(curriculo){
 
-        if(Array.isArray(vaga.candidatos)){
-            vaga.candidatos.push(JSON.parse(JSON.stringify(req.user._id)));
-        } else {
-            vaga.candidatos = [JSON.parse(JSON.stringify(req.user._id))];
-        }
+                for(const candidato of vaga.candidatos){
+                    if(candidato == curriculo.usuario){
+                        req.flash("success_msg", "Você já se candidatou a vaga "+vaga.nome)
+                        res.redirect("/")
+                    }
+                }
 
-        vaga.save().then(()=>{
-        req.flash("success_msg","Você se candidatou com sucesso! Continue encaminhando seu curriculo.")
-        res.redirect("/")
+                if(Array.isArray(vaga.candidatos)){
+                    vaga.candidatos.push(JSON.parse(JSON.stringify(req.user._id)));
+                } else {
+                    vaga.candidatos = [JSON.parse(JSON.stringify(req.user._id))];
+                }
+                vaga.save().then(()=>{
+                    req.flash("success_msg","Você se candidatou com sucesso! Continue encaminhando seu curriculo.")
+                    res.redirect("/")
+                }).catch((err)=>{
+                    req.flash("error_msg", "Houve um erro ao cadastrar candidatura: "+err)
+                    res.redirect("/")
+                })
+            }else{
+                req.flash("error_msg", "Você não possui curriculo, registre seu curriculo")
+                res.redirect("/candidato/criarCurriculo")
+            }
+            
+        }).catch((err)=>{
+            req.flash("error_msg", "Você não possui curriculo, registre seu curriculo: "+err)
+            res.redirect("/")
+        })
     }).catch((err)=>{
-        req.flash("error_msg", "Houve um erro ao cadastrar candidatura: "+err)
+        req.flash("error_msg", "Erro ao buscar vaga: "+err)
         res.redirect("/")
-    })
     })
 })
 

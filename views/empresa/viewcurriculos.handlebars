@@ -1,11 +1,14 @@
 <h3>Candidatos a vaga:</h3>
 
-{{#each curriculo}}
+<h1>{{experiencia}}</h1>
+
+{{#each teste}}
     <div class="card">
         <div class="card-body">
-            <h4>{{curriculo.usuario.nome}}</h4>
-            <small>Sobre: {{curriculo.usuario.sobre}}</small>
-            <a href="/empresa/curriculo/:{{curriculo._id}}"><button class="btn btn-success">Visualizar Curriculo</button></a>
+            <h4>{{this.nome}}</h4>
+            <small>Sobre: {{this.sobre}}</small><br><br>
+
+            <a href="/empresa/curriculo/:{{this._id}}"><button class="btn btn-success">Visualizar Curriculo</button></a>
         </div>
     </div>
 {{else}}

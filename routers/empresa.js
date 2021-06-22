@@ -110,23 +110,33 @@ router.get("/vaga/finalizar/:id", eEmpresa, (req,res)=>{
 })
 
 router.get("/visualizarinscritos/:id", eEmpresa, (req,res)=>{
-    result = []
     
-    Vaga.findOne({_id: req.params.id}).then((vaga)=>{
-        //console.log(Object.values(JSON.parse(JSON.stringify(vaga.candidatos))))
+    var result = []
+    Vaga.findOne({_id: req.params.id}).lean().then((vaga)=>{
         
-        Curriculo.find().then((curriculo)=>{
-            if(curriculo){
+        Curriculo.find().lean().then( async (curriculos)=>{
+            if(curriculos){
 
-                for(var r = 0; r < vaga.candidatos.length ; r++){
-                    for(var i = 0; i < curriculo.length; i++){
-                        if(vaga.candidatos[r] == curriculo[i].usuario){
-                            result.push(curriculo[r])
-                        }
+                const promises = []                
+                for(const candidato of vaga.candidatos){
+                    for(const curriculo of curriculos ){
+                        promises.push(
+                            new Promise((resolve) => {
+                                if(candidato == curriculo.usuario){
+                                    result.push(curriculo)
+                                }
+                                resolve(candidato)
+                            })
+                        )
                     }
                 }
-       
-                res.render("empresa/viewcurriculos", {curriculo: result})
+               
+                Promise.all(promises).then((resposta) => {
+                    console.log(result)
+                    console.log(result.usuario)
+                    res.render("empresa/viewcurriculos", {teste: result})
+                })
+               
             }else{
                 req.flash("error_msg", "Não há curriculos relacionados")
                 res.redirect("/empresa/vagas")

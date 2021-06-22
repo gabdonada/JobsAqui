@@ -7,6 +7,14 @@ const Curriculo = new Schema({
         ref: "usuarios",
         required: true
     },
+    nome:{
+        type: String,
+        required: true
+    },
+    sobre:{
+        type: String,
+        required: true
+    },
     experiencia:{
         type: String
     },
