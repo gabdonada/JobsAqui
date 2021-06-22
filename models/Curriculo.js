@@ -12,6 +12,17 @@ const Curriculo = new Schema({
         required: true
     },
     sobre:{
+        type: String
+    },
+    telefone:{
+        type: String,
+        required: true
+    },
+    email:{
+        type: String,
+        required: true
+    },
+    linkedin:{
         type: String,
         required: true
     },

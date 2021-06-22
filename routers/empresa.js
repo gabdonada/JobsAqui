@@ -151,9 +151,12 @@ router.get("/visualizarinscritos/:id", eEmpresa, (req,res)=>{
     })
 })
 
-router.get("/curriculo/:id", eEmpresa, (req,res)=>{
-    Curriculo.findOne({_id: req.params.id}).then((curriculo)=>{
+router.get("/curriculocandidato/:id", eEmpresa, (req,res)=>{
+    Curriculo.findOne({_id: req.params.id}).lean().then((curriculo)=>{
         res.render("empresa/viewcandidato", {curriculo: curriculo})
+    }).catch((err)=>{
+        req.flash("error_msg", "Houve um erro ao carregar curriculo: "+err)
+        res.redirect("/empresa/vagas")
     })
 })
 
