@@ -14,8 +14,10 @@ require("./models/Usuario")
 const Usuario = mongoose.model("usuarios")
 const empresa = require("./routers/empresa")
 const candidato = require("./routers/candidato")
+const admin = require("./routers/admin")
 const passport = require("passport")
 require("./config/auth")(passport)
+
 //Configuracoes
     //Sessao
     app.use(session({
@@ -105,10 +107,11 @@ require("./config/auth")(passport)
 
     app.use('/candidato', candidato) //'/candidato' é o prefixo, logo precisa ser adicionar pos url /candidato;
     app.use('/empresa', empresa)
-    //app.use("/usuario", usuario)
+    app.use("/admin", admin)
     
 //Outros
 const port = 8081
 app.listen(port, ()=> {
     console.log("Servidor online")
 })
+

@@ -217,4 +217,6 @@ router.get("/candidatarse/:id", eCandidato, (req,res)=>{
     })
 })
 
+
+
 module.exports = router
