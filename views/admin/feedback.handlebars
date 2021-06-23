@@ -1,0 +1,15 @@
+{{#each sugest}}
+  <div class="card m-4">
+    <div class="card-body">
+      <h3>{{nome}}</h3>
+      <small>Email: {{email}}</small><br>
+      <small>Telefone: {{telefone}}</small><br>
+      <small>Linkedin: {{linkedin}}</small><br>
+      <hr>
+      <p>Descrição: {{descricao}}</p>      
+      
+    </div>
+  </div>
+{{else}}
+  <h4>Não há vagas Feedbacks </h4>
+{{/each}}

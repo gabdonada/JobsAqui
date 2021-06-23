@@ -65,7 +65,7 @@ require("./config/auth")(passport)
 //Rotas
     app.get('/', (req, res) => {
         var result = []
-        Vaga.find().lean().sort({data: "desc"}).then((vagas)=>{
+        Vaga.find().lean().sort().then((vagas)=>{
             for(var i = 0; i < vagas.length; i++){
                 if(vagas[i].finalizado == "N"){
                     result.push(vagas[i])
