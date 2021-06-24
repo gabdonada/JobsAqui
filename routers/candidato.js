@@ -229,12 +229,12 @@ router.get("/pesquisa", (req, res)=>{
                 for(const vagas of vaga){
                     if(req.query.area == vagas.area){
                         result.push(vagas)
-                        console.log("Adicionando vaga")
+                        //console.log("Adicionando vaga")
                     }
                 }
 
                 res.render("index", {vagas: result})
-                console.log("Encaminhando para o front")
+                //console.log("Encaminhando para o front")
             }else{
                 req.flash("success_msg", "Não há vagas para esta area")
                 res.redirect("/")
