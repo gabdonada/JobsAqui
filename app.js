@@ -49,7 +49,7 @@ const db = require("./config/db")
 
     //Mongoose
         mongoose.Promise=global.Promise
-        mongoose.connect(db.mongoURI, {useNewUrlParser: true, useUnifiedTopology: true}).then(()=>{
+        mongoose.connect(process.env.MONGODB_URL, {useNewUrlParser: true, useUnifiedTopology: true}).then(()=>{
             console.log("Conectado ao Mongo")
         }).catch((err)=>{
             console.log("Erro ao Conectar ao Mongo:" + err)
@@ -72,7 +72,7 @@ const db = require("./config/db")
                     result.push(vagas[i])
                 }
             }        
-            res.render("index", {vagas: result})
+            res.render('index', {vagas: result})
         }).catch((err)=>{
             //console.log(err)
             req.flash("error_msg", "Erro ao carregar Jobs: "+err)
