@@ -101,6 +101,8 @@ require("./config/auth")(passport)
     })
 
     
+
+    
     app.get("/404", (req,res)=>{
         res.send('Erro 404!')
     })

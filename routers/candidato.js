@@ -217,6 +217,35 @@ router.get("/candidatarse/:id", eCandidato, (req,res)=>{
     })
 })
 
+router.get("/pesquisa", (req, res)=>{
+    //console.log(req.query.area) req.query pega o valor da variavel encaminhada pela URL quando method=get
+    result = []
+    if(req.query.area == "" || !req.query.area || req.query.area == undefined){
+        req.flash("success_msg", "Valor invalido")
+        res.redirect("/")
+    }else{ 
+        Vaga.find().lean().then( async (vaga)=>{
+            if(vaga){
+                for(const vagas of vaga){
+                    if(req.query.area == vagas.area){
+                        result.push(vagas)
+                        console.log("Adicionando vaga")
+                    }
+                }
+
+                res.render("index", {vagas: result})
+                console.log("Encaminhando para o front")
+            }else{
+                req.flash("success_msg", "Não há vagas para esta area")
+                res.redirect("/")
+            }
+        }).catch((err)=>{
+            req.flash("error_msg", "Erro ao buscar vagas: "+err)
+            res.redirect("/")
+        })
+    }
+})
+
 
 
 module.exports = router
