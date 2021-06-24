@@ -17,6 +17,7 @@ const candidato = require("./routers/candidato")
 const admin = require("./routers/admin")
 const passport = require("passport")
 require("./config/auth")(passport)
+const db = require("./config/db")
 
 //Configuracoes
     //Sessao
@@ -48,7 +49,7 @@ require("./config/auth")(passport)
 
     //Mongoose
         mongoose.Promise=global.Promise
-        mongoose.connect("mongodb://localhost/findJobs", {useNewUrlParser: true, useUnifiedTopology: true}).then(()=>{
+        mongoose.connect(db.mongoURI, {useNewUrlParser: true, useUnifiedTopology: true}).then(()=>{
             console.log("Conectado ao Mongo")
         }).catch((err)=>{
             console.log("Erro ao Conectar ao Mongo:" + err)
@@ -112,7 +113,7 @@ require("./config/auth")(passport)
     app.use("/admin", admin)
     
 //Outros
-const port = 8081
+const port = process.env.PORT || 8081 //variavel de ambiente que o Heroku vai atribuir, caso contrario entra na 8081
 app.listen(port, ()=> {
     console.log("Servidor online")
 })

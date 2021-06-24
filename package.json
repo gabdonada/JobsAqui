@@ -9,5 +9,24 @@
     "mongoose": "^5.12.13",
     "passport": "^0.4.1",
     "passport-local": "^1.0.0"
-  }
+  },
+  "name": "tgb",
+  "description": "Instalar coisas:",
+  "version": "1.0.0",
+  "main": "app.js",
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gabdonada/JobsAqui.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gabdonada/JobsAqui/issues"
+  },
+  "homepage": "https://github.com/gabdonada/JobsAqui#readme"
 }
