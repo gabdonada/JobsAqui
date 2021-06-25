@@ -122,7 +122,7 @@ router.post("/criarCurriculo/novo", eCandidato, (req,res) => {
         const novoCurriculo = {
             usuario: req.body.userid,
             nome: req.user.nome,
-            telefone: req.user.nome,
+            telefone: req.user.telefone,
             email: req.user.email,
             linkedin: req.user.linkedin,
             sobre: req.user.sobre,
