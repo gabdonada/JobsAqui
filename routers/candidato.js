@@ -180,7 +180,7 @@ router.post("/curriculo/edit", eCandidato, (req,res)=>{
 
 router.get("/candidatarse/:id", eCandidato, (req,res)=>{
     Vaga.findOne({_id: req.params.id}).then((vaga)=>{
-        Curriculo.findOne({usuario: req.user._id}).then( (curriculo)=>{
+        Curriculo.findOne({usuario: req.user._id}).then( async (curriculo)=>{
             if(curriculo){
 
                 for(const candidato of vaga.candidatos){
