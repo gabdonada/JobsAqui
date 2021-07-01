@@ -47,7 +47,9 @@ router.post("/vagas/nova", eEmpresa, (req, res)=>{
             descricao: req.body.descricao,
             area: req.body.area,
             beneficios: req.body.beneficios,
-            criador: req.user.id
+            criador: req.user.id,
+            lat: req.body.currentLat,
+            lon: req.body.currentLon
         }
 
         new Vaga(novaVaga).save().then(()=>{
