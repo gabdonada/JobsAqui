@@ -16,27 +16,8 @@
         
         document.getElementById("pesquisa").submit();
     }
-
-    function initialize(){
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(successFunction, errorFunction);
-        } 
-    }
-  
-    function successFunction(position) {
-        document.getElementById("currentLat").value = position.coords.latitude;
-        document.getElementById("currentLon").value = position.coords.longitude;
-    }
-
-    function errorFunction(){
-        alert("Como você bloqueou a localização, não será possível visualizar vagas. "+
-        "Caso queira vagas para o raio de 30 KM, recarregue a pagina.");
-    }
-
-<body onload="initialize()">
-
-    <input type="hidden" id="currentLon">
-    <input type="hidden" id="currentLat">
+</script>
+<body>
     {{>_navbar}}
     
     <div class="container mt-4">

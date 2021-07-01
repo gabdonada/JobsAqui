@@ -30,12 +30,6 @@ const Vaga = new Schema({
     finalizado:{
         type: String,
         default: "N"
-    },
-    lat:{
-        type: Number
-    },
-    lon:{
-        type: Number
     }
 })
  mongoose.model("vagas", Vaga)

@@ -4,24 +4,6 @@
 
 {{/each}}
 
-<script>
-    function initialize(){
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(successFunction, errorFunction);
-        } 
-    }
-  
-    function successFunction(position) {
-        document.getElementById("currentLat").value = position.coords.latitude;
-        document.getElementById("currentLon").value = position.coords.longitude;
-    }
-
-    function errorFunction(){
-        alert("Como você bloqueou a localização, não será possível criar a vaga. "+
-        "Caso queira criar a vaga, recarregue a pagina e permita a localização.");
-    }
-</script>
-
 <h3>Crie a vaga da sua empresa:</h3>
 <div class="card m-4">
     <div class="card-body">
@@ -69,10 +51,6 @@
             
             <label for="beneficios">Beneficios:</label><br>
                 <textarea type="text" name="beneficios" class="form-control" required></textarea>
-
-            <p style="color: gray;">OBS: A vaga herdará sua localização atual. \n Uma vez criada, a localização não poderá ser alterada</p>
-                <input type="hidden" id="currentLon">
-                <input type="hidden" id="currentLat">
             <button type="submit" class="btn btn-success mt-4">Cadastrar</button>
         </form>
     </div>
